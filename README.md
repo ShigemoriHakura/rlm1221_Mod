@@ -11,3 +11,6 @@ A jar package for null
 * Remove the .RSA .SF and MANIFEST.MF file in META-INF
 * Move back the main jar and the rlm1221.jar
 * Done~ just enjoy!
+
+## Custom jar
+* Plz get SHA-256 and convert to lower-case, and follow the instruction
