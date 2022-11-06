@@ -12,5 +12,12 @@ A jar package for null
 * Move back the main jar and the rlm1221.jar
 * Done~ just enjoy!
 
+## Way 2 (WTF is this way lol)
+* As they added the SHA-256 check, we can also change the .bat file
+* Modify the CLASS_PATH, rename the app\lib\rlm1221.jar to rlm1221_mod
+* Also modify your jar file to rlm1221_mod.jar and copy that into app\lib
+* Change all 4 .bat files and you are ready to go 
+* LOL
+
 ## Custom jar
 * Plz get SHA-256 and convert to lower-case, and follow the instruction
