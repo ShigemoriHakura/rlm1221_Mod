@@ -19,15 +19,20 @@ public class RlmActInfo implements RlmConstants
     private int revoked;
     private String exp;
     private String hostid;
+    private String keyExp;
+    private int allowedHostids;
+    private int subInterval;
+    private int subWindow;
     
     private native int rlmActInfo(final long p0, final String p1, final String p2);
     
     public RlmActInfo(final RlmHandle rh, final String url, final String actKey) throws RlmException {
-        final long longHandle = rh.getHandle();
+        System.out.println("RlmActInfo RIP~");
+        /*final long longHandle = rh.getHandle();
         final int stat = this.rlmActInfo(longHandle, url, actKey);
         if (stat != 0) {
             throw new RlmException(stat);
-        }
+        }*/
         this.url = url;
         this.actKey = actKey;
     }
@@ -82,5 +87,21 @@ public class RlmActInfo implements RlmConstants
     
     public String getHostid() {
         return this.hostid;
+    }
+    
+    public String getKeyExpiration() {
+        return this.keyExp;
+    }
+    
+    public int getSubscriptionInterval() {
+        return this.subInterval;
+    }
+    
+    public int getAllowedHostids() {
+        return this.allowedHostids;
+    }
+    
+    public int getSubscriptionWindow() {
+        return this.subWindow;
     }
 }

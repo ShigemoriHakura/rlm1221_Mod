@@ -11,6 +11,7 @@ public class RlmHandle implements RlmConstants
     private long handle;
     private boolean previouslyActivated;
     private static final String defaultLibName = "rlm1501";
+    private Vector productHandleList;
     
     private static native void rlmPutenv(final String p0);
     
@@ -42,6 +43,8 @@ public class RlmHandle implements RlmConstants
     
     private native int rlmProductNext(final long p0);
     
+    private native void rlmProductFree(final long p0);
+    
     private native String rlmProductName(final long p0);
     
     private native String rlmProductVersion(final long p0);
@@ -60,6 +63,8 @@ public class RlmHandle implements RlmConstants
     
     private native int rlmProductExpDays(final long p0);
     
+    private native String rlmProductExpTime(final long p0);
+    
     private native String rlmProductExpiration(final long p0);
     
     private native int rlmProductHostBased(final long p0);
@@ -68,13 +73,27 @@ public class RlmHandle implements RlmConstants
     
     private native int rlmProductHold(final long p0);
     
+    private native int rlmProductIsAlias(final long p0);
+    
+    private native int rlmProductIsFloating(final long p0);
+    
+    private native int rlmProductIsNodelocked(final long p0);
+    
     private native int rlmProductIsRoaming(final long p0);
+    
+    private native int rlmProductIsMetered(final long p0);
+    
+    private native int rlmProductIsSingle(final long p0);
     
     private native String rlmProductIssuer(final long p0);
     
     private native int rlmMaxRoam(final long p0);
     
     private native int rlmMaxRoamCount(final long p0);
+    
+    private native int rlmProductMeterCounter(final long p0);
+    
+    private native int rlmMeterCurCount(final long p0);
     
     private native int rlmMaxShare(final long p0);
     
@@ -83,6 +102,8 @@ public class RlmHandle implements RlmConstants
     private native int rlmMinCheckout(final long p0);
     
     private native int rlmMinTimeout(final long p0);
+    
+    private native int rlmProductNamedUserCount(final long p0);
     
     private native int rlmNRes(final long p0);
     
@@ -97,6 +118,8 @@ public class RlmHandle implements RlmConstants
     private native int rlmShare(final long p0);
     
     private native int rlmSoftLimit(final long p0);
+    
+    private native String rlmProductStart(final long p0);
     
     private native int rlmTimeout(final long p0);
     
@@ -140,11 +163,15 @@ public class RlmHandle implements RlmConstants
     
     private native int rlmActRevokeDisconn(final long p0, final String p1, final String p2, final byte[] p3);
     
+    private native int rlmActRevokeRehost(final long p0, final String p1, final String p2, final int p3);
+    
     private native int rlmActKeyvalid(final long p0, final String p1, final String p2, final String p3);
     
     private native int rlmActKeyvalidLicense(final long p0, final String p1, final String p2, final String p3, final byte[] p4);
     
     private native int rlmGetRehost(final long p0, final String p1, final byte[] p2);
+    
+    private native void rlmSetReferenceHostid(final long p0, final String p1);
     
     public void loadLib(final String libName) {
         System.loadLibrary(libName);
@@ -179,35 +206,40 @@ public class RlmHandle implements RlmConstants
     }
     
     public RlmHandle(final String licLoc, final String appPath, final String license) throws RlmException {
-        this.createHandle(licLoc, appPath, license, "rlm1221", null, 0);
+        this.productHandleList = null;
+        this.createHandle(licLoc, appPath, license, "rlm1501", null, 0);
     }
     
     public RlmHandle(final String licLoc, final String appPath, final String license, final int promise) throws RlmException {
-        this.createHandle(licLoc, appPath, license, "rlm1221", null, promise);
+        this.productHandleList = null;
+        this.createHandle(licLoc, appPath, license, "rlm1501", null, promise);
     }
     
     public RlmHandle(final String licLoc, final String appPath, final String license, final String[] env) throws RlmException {
-        this.createHandle(licLoc, appPath, license, "rlm1221", env, 0);
+        this.productHandleList = null;
+        this.createHandle(licLoc, appPath, license, "rlm1501", env, 0);
     }
     
     public RlmHandle(final String licLoc, final String appPath, final String license, final String libName) throws RlmException {
+        this.productHandleList = null;
         String lib = null;
         if (libName != null && libName.length() > 0) {
             lib = libName;
         }
         else {
-            lib = "rlm1221";
+            lib = "rlm1501";
         }
         this.createHandle(licLoc, appPath, license, lib, null, 0);
     }
     
     public RlmHandle(final String licLoc, final String appPath, final String license, final String libName, final String[] env) throws RlmException {
+        this.productHandleList = null;
         String lib = null;
         if (libName != null && libName.length() > 0) {
             lib = libName;
         }
         else {
-            lib = "rlm1221";
+            lib = "rlm1501";
         }
         this.createHandle(licLoc, appPath, license, lib, env, 0);
     }
@@ -223,7 +255,10 @@ public class RlmHandle implements RlmConstants
         this.handle = 0L;
     }
     
-    @Deprecated
+    public static void putenv(final String nvp) {
+        rlmPutenv(nvp);
+    }
+    
     public String getHostID(final int type) {
         final byte[] buf = new byte[76];
         String hid = null;
@@ -271,6 +306,56 @@ public class RlmHandle implements RlmConstants
     }
     
     private void addProduct(final long prodHandle, final Vector v, final int index) {
+        RlmAvailableProduct prod = new RlmAvailableProduct();
+        System.out.println("[ShiroSaki] addProduct also RIP~");
+        prod.setName("live2d_editorc-3");
+        prod.setVersion("3.0");
+        prod.setActKey("CHCC-1234-5678-9012-1234");
+        prod.setCount(0);
+        prod.setCurrentInUse(0);
+        prod.setCurrentResUse(0);
+        prod.setContract("LiveDDDDDDDDD");
+        prod.setCustomer("My love~");
+        prod.setExpDays(0);
+        //prod.setExpTime("");
+        prod.setExpiration("permanent");
+        prod.setHostBased(0);
+        prod.setHostId("ANY");
+        prod.setHold(0);
+        prod.setIsAlias(0);
+        prod.setIsFloating(0);
+        prod.setIsMetered(0);
+        prod.setIsNodelocked(0);
+        prod.setIsRoaming(0);
+        prod.setIsSingle(0);
+        prod.setIssuer("ShiroSaki");
+        prod.setMaxRoam(0);
+        prod.setMaxRoamCount(0);
+        prod.setMeterCounter(0);
+        prod.setMeterCurCount(0);
+        prod.setMaxShare(99);
+        prod.setMinRemove(0);
+        prod.setMinCheckout(0);
+        prod.setMinTimeout(0);
+        prod.setNamedUserCount(0);
+        prod.setNRes(0);
+        prod.setNRoamAllowed(0);
+        prod.setOptions("");
+        prod.setCurrentRoam(0);
+        prod.setServer("127.0.0.1");
+        prod.setShare(0);
+        prod.setSoftLimit(0);
+        prod.setStart("");
+        prod.setTimeout(0);
+        prod.setTimezone(0);
+        prod.setIsTokenBased(0);
+        prod.setType(0);
+        prod.setUserBased(0);
+        prod.setClientCache(0);
+        prod.setProdHandle(prodHandle);
+        prod.setIndex(index);
+        v.add(prod);
+        /*
         final RlmAvailableProduct prod = new RlmAvailableProduct();
         prod.setName(this.rlmProductName(prodHandle));
         prod.setVersion(this.rlmProductVersion(prodHandle));
@@ -306,13 +391,18 @@ public class RlmHandle implements RlmConstants
         prod.setType(this.rlmType(prodHandle));
         prod.setUserBased(this.rlmUserBased(prodHandle));
         prod.setClientCache(this.rlmClientCache(prodHandle));
-        prod.setProdHandle(prodHandle);
-        prod.setIndex(index);
-        v.add(prod);
+        RlmAvailableProduct prod = new RlmAvailableProduct();
+        */
     }
     
     public Vector getAvailableProducts(final String product, final String version) {
-        Vector v = null;
+        System.out.println("[ShiroSaki] getAvailableProducts has gone, RIP~");
+        Vector vector = null;
+        vector = new Vector();
+        long l = 1L;
+        addProduct(l, vector, 1);
+        return vector;
+        /*Vector v = null;
         final long prodHandle = this.rlmProducts(this.handle, product, version);
         if (prodHandle != 0L) {
             v = new Vector();
@@ -322,8 +412,13 @@ public class RlmHandle implements RlmConstants
             while (this.rlmProductNext(prodHandle) == 0) {
                 this.addProduct(prodHandle, v, i++);
             }
+            if (this.productHandleList == null) {
+                this.productHandleList = new Vector();
+            }
+            final Long l = new Long(prodHandle);
+            this.productHandleList.add(l);
         }
-        return v;
+        return v;*/
     }
     
     protected void positionProdHandle(final long prodHandle, final int index) {
@@ -392,7 +487,8 @@ public class RlmHandle implements RlmConstants
     }
     
     public String activateLicense(final String url, final String key, final int count, final RlmActHandle actHandle) throws RlmException {
-        final byte[] buf = new byte[102400];
+        return "[ShiroSaki] Cracked";
+        /*final byte[] buf = new byte[102400];
         long ah;
         if (actHandle == null) {
             ah = 0L;
@@ -405,9 +501,17 @@ public class RlmHandle implements RlmConstants
             throw new RlmException(stat, this);
         }
         this.previouslyActivated = (stat == 1);
-        return new String(buf).trim();
+        return new String(buf).trim();*/
     }
     
+    public void revokeRehostable(final String url, final String product, final int flags) throws RlmException {
+        final int stat = this.rlmActRevokeRehost(this.handle, url, product, flags);
+        if (stat != 0) {
+            throw new RlmException(stat, this);
+        }
+    }
+    
+    @Deprecated
     public void revokeLicense(final String url, final String product) throws RlmException {
         final int stat = this.rlmActRevoke(this.handle, url, product);
         if (stat != 0) {
@@ -415,6 +519,7 @@ public class RlmHandle implements RlmConstants
         }
     }
     
+    @Deprecated
     public void revokeLicenseReference(final String url, final String product) throws RlmException {
         final int stat = this.rlmActRevokeReference(this.handle, url, product);
         if (stat != 0) {
@@ -469,12 +574,21 @@ public class RlmHandle implements RlmConstants
         return ret;
     }
     
+    public void setReferenceHostid(final String hostid) {
+        this.rlmSetReferenceHostid(this.handle, hostid);
+    }
+    
     public void doClientSideDiagnostics(final String diagFile) {
         this.rlmDiagnostics(this.handle, diagFile);
     }
     
     @Override
     protected void finalize() {
+        for (int n = this.productHandleList.size(), i = 0; i < n; ++i) {
+            final Long l = (Long) this.productHandleList.get(i);
+            final long prodHandle = l;
+            this.rlmProductFree(prodHandle);
+        }
         this.close();
     }
     

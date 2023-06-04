@@ -21,7 +21,7 @@ public class RlmLicense implements RlmConstants
     
     private native int rlmGoodOnce(final long p0);
     
-    private native String rlmLicenseActKey(final long p0);
+    private native String rlmLicenseAkey(final long p0);
     
     private native String rlmLicenseContract(final long p0);
     
@@ -33,11 +33,15 @@ public class RlmLicense implements RlmConstants
     
     private native String rlmLicenseExp(final long p0);
     
+    private native String rlmLicenseExpTime(final long p0);
+    
     private native int rlmLicenseHold(final long p0);
     
     private native int rlmLicenseHostBased(final long p0);
     
     private native String rlmLicenseHostid(final long p0);
+    
+    private native int rlmLicenseIsMetered(final long p0);
     
     private native String rlmLicenseIssued(final long p0);
     
@@ -48,6 +52,8 @@ public class RlmLicense implements RlmConstants
     private native int rlmLicenseMaxRoam(final long p0);
     
     private native int rlmLicenseMaxRoamCount(final long p0);
+    
+    private native int rlmLicenseMeterCounter(final long p0);
     
     private native int rlmLicenseMinRemove(final long p0);
     
@@ -68,6 +74,8 @@ public class RlmLicense implements RlmConstants
     private native int rlmLicenseSoftLimit(final long p0);
     
     private native String rlmLicenseStart(final long p0);
+    
+    private native String rlmLicenseTeams(final long p0);
     
     private native int rlmLicenseType(final long p0);
     
@@ -100,23 +108,27 @@ public class RlmLicense implements RlmConstants
     private native int rlmAuthCheck(final long p0, final String p1);
     
     public RlmLicense(final RlmHandle handle, final String product, final String version, final int count) throws RlmException {
-        this.licHandle = this.rlmCheckout(handle.getHandle(), product, version, count);
+        System.out.println("[ShiroSaki] RlmLicense RIP");
+        this.valid = true;
+        /*this.licHandle = this.rlmCheckout(handle.getHandle(), product, version, count);
         final int stat = this.rlmLicenseStat(this.licHandle);
         if (stat != 0 && stat != -25 && stat != -39) {
             throw new RlmException(stat, handle, this);
         }
-        this.valid = true;
+        this.valid = true;*/
     }
     
     public RlmLicense(final RlmHandle handle, final RlmAvailableProduct product, final String version, final int count) throws RlmException {
-        final long prodHandle = product.getProdHandle();
+        System.out.println("[ShiroSaki] RlmLicense RIP");
+        this.valid = true;
+        /*final long prodHandle = product.getProdHandle();
         handle.positionProdHandle(prodHandle, product.getIndex());
         this.licHandle = this.rlmCheckoutProduct(handle.getHandle(), prodHandle, version, count);
         final int stat = this.rlmLicenseStat(this.licHandle);
         if (stat != 0 && stat != -25 && stat != -39) {
             throw new RlmException(stat, handle, this);
         }
-        this.valid = true;
+        this.valid = true;*/
     }
     
     protected long getLicenseHandle() {
@@ -124,11 +136,13 @@ public class RlmLicense implements RlmConstants
     }
     
     public int status() throws RlmException {
-        if (this.valid) {
+        System.out.println("[ShiroSaki] Here should always be 0");
+        return 0;
+        /*if (this.valid) {
             final int stat = this.rlmLicenseStat(this.licHandle);
             return stat;
         }
-        throw new RlmException(-19);
+        throw new RlmException(-19);*/
     }
     
     public void checkin() {
@@ -148,7 +162,7 @@ public class RlmLicense implements RlmConstants
     }
     
     public String getActKey() {
-        return this.rlmLicenseActKey(this.licHandle);
+        return this.rlmLicenseAkey(this.licHandle);
     }
     
     public boolean goodOnce() {
@@ -184,6 +198,10 @@ public class RlmLicense implements RlmConstants
         return this.rlmLicenseExp(this.licHandle);
     }
     
+    public String getExpTime() {
+        return this.rlmLicenseExpTime(this.licHandle);
+    }
+    
     public int getHold() {
         return this.rlmLicenseHold(this.licHandle);
     }
@@ -198,6 +216,11 @@ public class RlmLicense implements RlmConstants
     
     public String getIssued() {
         return this.rlmLicenseIssued(this.licHandle);
+    }
+    
+    public boolean isMetered() {
+        final int metered = this.rlmLicenseIsMetered(this.licHandle);
+        return metered != 0;
     }
     
     public String getIssuer() {
@@ -219,6 +242,10 @@ public class RlmLicense implements RlmConstants
     
     public int getMaxRoamCount() {
         return this.rlmLicenseMaxRoamCount(this.licHandle);
+    }
+    
+    public int getMeterCounter() {
+        return this.rlmLicenseMeterCounter(this.licHandle);
     }
     
     public int getMinRemove() {
@@ -255,6 +282,10 @@ public class RlmLicense implements RlmConstants
     
     public int getType() {
         return this.rlmLicenseType(this.licHandle);
+    }
+    
+    public String getTeamsURL() {
+        return this.rlmLicenseTeams(this.licHandle);
     }
     
     public int getTimezone() {
@@ -306,7 +337,6 @@ public class RlmLicense implements RlmConstants
     }
     
     public boolean authCheck(final String license) throws RlmException {
-        System.out.println("authCheck");
         final int stat = this.rlmAuthCheck(this.licHandle, license);
         if (stat != 0) {
             throw new RlmException(stat);

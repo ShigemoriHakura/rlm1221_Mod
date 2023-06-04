@@ -13,19 +13,24 @@ public class RlmAvailableProduct implements RlmConstants
     private String contract;
     private String customer;
     private int expDays;
+    private String expTime;
     private String expiration;
     private int inUse;
     private int resInUse;
     private int hostBased;
     private String hostId;
     private int hold;
+    private boolean isMetered;
     private String issuer;
     private int maxRoam;
     private int maxRoamCount;
     private int maxShare;
+    private int meterCounter;
+    private int meterCurCount;
     private int minRemove;
     private int minCheckout;
     private int minTimeout;
+    private int namedUserCount;
     private int nRes;
     private int nRoamAllowed;
     private String options;
@@ -33,9 +38,14 @@ public class RlmAvailableProduct implements RlmConstants
     private String server;
     private int share;
     private int softLimit;
+    private String start;
     private int timeout;
     private int timezone;
+    private boolean isAlias;
+    private boolean isFloating;
+    private boolean isNodelocked;
     private boolean isRoaming;
+    private boolean isSingle;
     private boolean isTokenBased;
     private int type;
     private int userBased;
@@ -94,6 +104,14 @@ public class RlmAvailableProduct implements RlmConstants
         return this.customer;
     }
     
+    protected void setExpTime(final String expTime) {
+        this.expTime = expTime;
+    }
+    
+    public String getExpTime() {
+        return this.expTime;
+    }
+    
     protected void setExpiration(final String expiration) {
         this.expiration = expiration;
     }
@@ -150,6 +168,19 @@ public class RlmAvailableProduct implements RlmConstants
         return this.hold;
     }
     
+    protected void setIsMetered(final int isMetered) {
+        if (isMetered != 0) {
+            this.isMetered = true;
+        }
+        else {
+            this.isMetered = false;
+        }
+    }
+    
+    public boolean getIsMetered() {
+        return this.isMetered;
+    }
+    
     protected void setIssuer(final String issuer) {
         this.issuer = issuer;
     }
@@ -182,6 +213,22 @@ public class RlmAvailableProduct implements RlmConstants
         return this.maxShare;
     }
     
+    protected void setMeterCounter(final int counter) {
+        this.meterCounter = counter;
+    }
+    
+    public int getMeterCounter() {
+        return this.meterCounter;
+    }
+    
+    protected void setMeterCurCount(final int count) {
+        this.meterCurCount = count;
+    }
+    
+    public int getMeterCurCount() {
+        return this.meterCurCount;
+    }
+    
     protected void setMinCheckout(final int count) {
         this.minCheckout = count;
     }
@@ -204,6 +251,14 @@ public class RlmAvailableProduct implements RlmConstants
     
     public int getMinRemove() {
         return this.minRemove;
+    }
+    
+    protected void setNamedUserCount(final int count) {
+        this.namedUserCount = count;
+    }
+    
+    public int getNamedUserCount() {
+        return this.namedUserCount;
     }
     
     protected void setNRes(final int count) {
@@ -262,6 +317,14 @@ public class RlmAvailableProduct implements RlmConstants
         return this.softLimit;
     }
     
+    protected void setStart(final String start) {
+        this.start = start;
+    }
+    
+    public String getStart() {
+        return this.start;
+    }
+    
     protected void setTimeout(final int count) {
         this.timeout = count;
     }
@@ -278,8 +341,43 @@ public class RlmAvailableProduct implements RlmConstants
         return this.timezone;
     }
     
-    protected void setIsRoaming(final boolean roaming) {
-        this.isRoaming = roaming;
+    protected void setIsAlias(final int alias) {
+        if (alias == 0) {
+            this.isAlias = false;
+        }
+        else {
+            this.isAlias = true;
+        }
+    }
+    
+    public boolean getIsAlias() {
+        return this.isAlias;
+    }
+    
+    protected void setIsFloating(final int floating) {
+        if (floating == 0) {
+            this.isFloating = false;
+        }
+        else {
+            this.isFloating = true;
+        }
+    }
+    
+    public boolean getIsFloating() {
+        return this.isFloating;
+    }
+    
+    protected void setIsNodelocked(final int nodelocked) {
+        if (nodelocked == 0) {
+            this.isNodelocked = false;
+        }
+        else {
+            this.isNodelocked = true;
+        }
+    }
+    
+    public boolean getIsNodelocked() {
+        return this.isNodelocked;
     }
     
     protected void setIsRoaming(final int roaming) {
@@ -293,6 +391,19 @@ public class RlmAvailableProduct implements RlmConstants
     
     public boolean getIsRoaming() {
         return this.isRoaming;
+    }
+    
+    protected void setIsSingle(final int single) {
+        if (single == 0) {
+            this.isSingle = false;
+        }
+        else {
+            this.isSingle = true;
+        }
+    }
+    
+    public boolean getIsSingle() {
+        return this.isSingle;
     }
     
     protected void setIsTokenBased(final boolean tokenBased) {
