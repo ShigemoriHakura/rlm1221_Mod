@@ -1,0 +1,10 @@
+<component name="ArtifactManager">
+  <artifact build-on-make="true" name="rlm1501:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/rlm1501_jar</output-path>
+    <root id="root">
+      <element id="archive" name="rlm1501.jar">
+        <element id="module-output" name="rlm1501" />
+      </element>
+    </root>
+  </artifact>
+</component>
