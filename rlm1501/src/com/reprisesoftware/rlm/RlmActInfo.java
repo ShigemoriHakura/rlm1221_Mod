@@ -27,7 +27,7 @@ public class RlmActInfo implements RlmConstants
     private native int rlmActInfo(final long p0, final String p1, final String p2);
     
     public RlmActInfo(final RlmHandle rh, final String url, final String actKey) throws RlmException {
-        System.out.println("RlmActInfo RIP~");
+        System.out.println("[ShiroSaki] RlmActInfo RIP~");
         /*final long longHandle = rh.getHandle();
         final int stat = this.rlmActInfo(longHandle, url, actKey);
         if (stat != 0) {
