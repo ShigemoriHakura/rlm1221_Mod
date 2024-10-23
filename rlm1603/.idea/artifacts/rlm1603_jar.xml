@@ -1,0 +1,13 @@
+<component name="ArtifactManager">
+  <artifact build-on-make="true" name="rlm1603:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/rlm1603_jar</output-path>
+    <root id="root">
+      <element id="archive" name="rlm1603.jar">
+        <element id="directory" name="META-INF">
+          <element id="file-copy" path="$PROJECT_DIR$/src/META-INF/MANIFEST.MF" />
+        </element>
+        <element id="module-output" name="rlm1603" />
+      </element>
+    </root>
+  </artifact>
+</component>
